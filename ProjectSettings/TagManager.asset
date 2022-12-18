@@ -41,3 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: cells
+    uniqueID: 3950488917
+    locked: 0
+  - name: tokens
+    uniqueID: 705787483
+    locked: 0
