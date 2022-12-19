@@ -4,21 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ResetButton : MonoBehaviour, IPointerClickHandler
+public class ExitButton : MonoBehaviour, IPointerClickHandler
 {
     #region properties exposed to the inspector
     
     #endregion
 
-    // set up the reset event to broadcast every OnPointerClick()
-    public delegate void ResetClicked();
-    public static event ResetClicked OnResetClicked;
+    
 
     #region IPointerClickHandler Methods
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnResetClicked?.Invoke();        
-        Hide();
+        Application.Quit(); // only works when game is built
+        UnityEditor.EditorApplication.isPlaying = false; // works in Unity editor
     }
     #endregion
 
@@ -26,11 +24,12 @@ public class ResetButton : MonoBehaviour, IPointerClickHandler
     void Start()
     {
         BoardEngine.OnTurnEnded += CheckForGameOver;
+        ResetButton.OnResetClicked += ResetGame;
         Hide();
     }
     void Update()
     {
-        
+
     }
     #endregion
 
@@ -61,7 +60,12 @@ public class ResetButton : MonoBehaviour, IPointerClickHandler
     {
         gameObject.SetActive(false);
     }
+    private void ResetGame()
+    {
+        Hide();
+    }
     #endregion
 
 
 }
+

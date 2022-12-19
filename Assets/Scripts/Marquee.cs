@@ -7,7 +7,6 @@ using Assets.Scripts;
 public class Marquee : MonoBehaviour
 {
     #region properties exposed to the inspector
-    //public BoardEngine board;
     public TextMeshProUGUI textObject;
     #endregion
 
