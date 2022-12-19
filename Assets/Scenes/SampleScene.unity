@@ -2192,7 +2192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c74b6b30dad64048b2e4d1844aeb2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  centerSquare: {fileID: 1362635097}
+  centerSquare: {fileID: 1362635100}
+  overflow: 25
 --- !u!120 &924351825
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2244,17 +2245,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.07430267
-        value: 1
-        inSlope: 2.8597631
-        outSlope: 2.8597631
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.15669504
-      - serializedVersion: 3
-        time: 0.99999994
-        value: 1
+        time: 0.5741935
+        value: 0.05184555
         inSlope: -2.2962973
         outSlope: -2.2962973
         tangentMode: 0
@@ -2266,8 +2258,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0, g: 0.15686275, b: 0.34901962, a: 1}
-      key1: {r: 0, g: 0.15686275, b: 0.34901962, a: 1}
+      key0: {r: 0.40784314, g: 0.68235296, b: 0.83137256, a: 1}
+      key1: {r: 0.40784314, g: 0.68235296, b: 0.83137256, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
