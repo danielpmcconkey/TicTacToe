@@ -20,9 +20,12 @@ public class SquareButton : MonoBehaviour, IPointerClickHandler
     #endregion
 
 
-    // set up the turn taken event to broadcast every turn taken
+    #region event broadcasting
+    // letting other objects know a player has taken a turn and which 
+    // position they chose
     public delegate void TurnTaken(int position);
-    public static event TurnTaken OnTurnTaken;
+    public static event TurnTaken OnTurnTaken; 
+    #endregion
 
     #region IPointerClickHandler methods
     public void OnPointerClick(PointerEventData eventData)

@@ -7,12 +7,14 @@ using UnityEngine.EventSystems;
 public class ResetButton : MonoBehaviour, IPointerClickHandler
 {
     #region properties exposed to the inspector
-    
+
     #endregion
 
-    // set up the reset event to broadcast every OnPointerClick()
+    #region event broadcasting
+    // letting other objects know the reset button was clicked
     public delegate void ResetClicked();
-    public static event ResetClicked OnResetClicked;
+    public static event ResetClicked OnResetClicked; 
+    #endregion
 
     #region IPointerClickHandler Methods
     public void OnPointerClick(PointerEventData eventData)

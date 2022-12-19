@@ -48,9 +48,15 @@ public class BoardEngine : MonoBehaviour
     #endregion
 
 
-    // set up the turn ended event to broadcast every EndTurn()
+    #region event broadcasting
+    // letting other objects know the turn is over and the game 
+    // state at end of turn
     public delegate void TurnEnded(GameState state);
     public static event TurnEnded OnTurnEnded;
+    // letting other objects know how the game was won
+    public delegate void WinPath(int start, int end);
+    public static event WinPath OnWinPath; 
+    #endregion
 
     #region MonoBehaviour Methods
     void Start()
@@ -66,7 +72,7 @@ public class BoardEngine : MonoBehaviour
             new int[] { 1, 4, 7 },
             new int[] { 2, 5, 8 },
             new int[] { 0, 4, 8 },
-            new int[] { 2, 4, 6 }
+            new int[] { 6, 4, 2 }
         };
 
         ResetBoard();
@@ -83,10 +89,11 @@ public class BoardEngine : MonoBehaviour
     #region private methods
     private void EndTurn()
     {
-        (bool isWin, int player) winState = IsWin();
+        (bool isWin, int player, int[] winPath) winState = IsWin();
         if(winState.isWin)
         {
             gameState = winState.player == 1 ? GameState.PLAYER_1_WINS : GameState.PLAYER_2_WINS;
+            OnWinPath?.Invoke(winState.winPath[0], winState.winPath[2]);
         }
         else if (IsDrawn()) gameState = GameState.DRAW;
         else if(activePlayer == 1)
@@ -110,15 +117,15 @@ public class BoardEngine : MonoBehaviour
         }
         return true;
     }
-    private (bool, int) IsWin()
+    private (bool, int, int[]) IsWin()
     {
         foreach (var winPath in winPaths)
         {
             int sumPath = squares[winPath[0]] + squares[winPath[1]] + squares[winPath[2]];
-            if (sumPath == 3 * player1Multiplier) return (true, 1);
-            if (sumPath == 3 * player2Multiplier) return (true, 2);
+            if (sumPath == 3 * player1Multiplier) return (true, 1, winPath);
+            if (sumPath == 3 * player2Multiplier) return (true, 2, winPath);
         }
-        return (false, 0);
+        return (false, 0, new int[] { 0, 0, 0 });
     }
     private void PlaceToken(int position)
     {
