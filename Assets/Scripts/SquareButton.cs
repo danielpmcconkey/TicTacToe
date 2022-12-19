@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,32 +12,47 @@ public class SquareButton : MonoBehaviour, IPointerClickHandler
     public Sprite emptySprite;
     public Sprite player1Sprite;
     public Sprite player2Sprite;
-    public BoardEngine boardEngine;
     public Image buttonImage;
     #endregion
+
+    #region private properties
+    private GameState gameState;
+    #endregion
+
+
+    // set up the turn taken event to broadcast every turn taken
+    public delegate void TurnTaken(int position);
+    public static event TurnTaken OnTurnTaken;
 
     #region IPointerClickHandler methods
     public void OnPointerClick(PointerEventData eventData)
     {
-        try
+        switch (gameState)
         {
-            int currentPlayerTurn = boardEngine.activePlayer;
-            boardEngine.PlaceToken(boardPosition);
-            if (currentPlayerTurn == 1) buttonImage.sprite = player1Sprite;
-            else buttonImage.sprite = player2Sprite;
-        }
-        catch (System.ArgumentException)
-        {
-            // square was already owned. swallow
-        }
+            case GameState.DRAW:
+                break;
+            case GameState.PLAYER_1_WINS:
+                break;
+            case GameState.PLAYER_2_WINS:
+                break;
+            case GameState.PLAYER_1_TURN:
+                buttonImage.sprite = player1Sprite;
+                OnTurnTaken?.Invoke(boardPosition);
+                break;
+            case GameState.PLAYER_2_TURN:
+                buttonImage.sprite = player2Sprite;
+                OnTurnTaken?.Invoke(boardPosition);
+                break;
+        }        
     } 
     #endregion
 
     #region MonoBehaviour Methods
     private void Start()
     {
-        ResetButton.OnResetClicked += ResetSprite;
-        ResetSprite();
+        ResetButton.OnResetClicked += ResetGame;
+        BoardEngine.OnTurnEnded += UpdateGameState;
+        ResetGame();
     }
     private void Update()
     {
@@ -46,9 +62,14 @@ public class SquareButton : MonoBehaviour, IPointerClickHandler
     #endregion
 
     #region private methods
-    private void ResetSprite()
+    private void UpdateGameState(GameState state)
+    {
+        gameState = state;
+    }
+    private void ResetGame()
     {
         buttonImage.sprite = emptySprite;
+        gameState = GameState.PLAYER_1_TURN;
     } 
     #endregion
 

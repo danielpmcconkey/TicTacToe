@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class ResetButton : MonoBehaviour, IPointerClickHandler
 {
     #region properties exposed to the inspector
-    public BoardEngine board;
+    //public BoardEngine board;
     #endregion
 
     // set up the reset event to broadcast every OnPointerClick()
@@ -35,9 +35,9 @@ public class ResetButton : MonoBehaviour, IPointerClickHandler
     #endregion
 
     #region private methods
-    private void CheckForGameOver()
+    private void CheckForGameOver(GameState gameState)
     {
-        switch (board.gameState)
+        switch (gameState)
         {
             case GameState.PLAYER_1_WINS:
                 Display();

@@ -43,19 +43,20 @@ public class BoardEngine : MonoBehaviour
     private int[][] winPaths;
     const int player1Multiplier = 1;
     const int player2Multiplier = -1;
-    public int activePlayer { get; private set; }
-    public GameState gameState { get; private set; }
+    private int activePlayer;
+    private GameState gameState;
     #endregion
 
 
     // set up the turn ended event to broadcast every EndTurn()
-    public delegate void TurnEnded();
+    public delegate void TurnEnded(GameState state);
     public static event TurnEnded OnTurnEnded;
 
     #region MonoBehaviour Methods
     void Start()
     {
         ResetButton.OnResetClicked += ResetBoard;
+        SquareButton.OnTurnTaken += PlaceToken;
         winPaths = new int[][]
         {
             new int[] { 0, 1, 2 },
@@ -77,17 +78,6 @@ public class BoardEngine : MonoBehaviour
     #endregion
 
     #region public methods
-    public void PlaceToken(int position)
-    {
-        if (gameState == GameState.DRAW || gameState == GameState.PLAYER_1_WINS || gameState == GameState.PLAYER_2_WINS)
-            return; // Game's over, yo!
-        // check if position is already occupied
-        if (squares[position] != 0) return; // Illegal move
-        // assign the square
-        squares[position] = (activePlayer == 1) ? player1Multiplier : player2Multiplier;
-        // now scurry!
-        EndTurn();
-    }
     #endregion
 
     #region private methods
@@ -110,7 +100,7 @@ public class BoardEngine : MonoBehaviour
             activePlayer = 1;
         }
 
-        OnTurnEnded?.Invoke();
+        OnTurnEnded?.Invoke(gameState);
     }
     private bool IsDrawn()
     {
@@ -129,6 +119,17 @@ public class BoardEngine : MonoBehaviour
             if (sumPath == 3 * player2Multiplier) return (true, 2);
         }
         return (false, 0);
+    }
+    private void PlaceToken(int position)
+    {
+        if (gameState == GameState.DRAW || gameState == GameState.PLAYER_1_WINS || gameState == GameState.PLAYER_2_WINS)
+            return; // Game's over, yo!
+        // check if position is already occupied
+        if (squares[position] != 0) return; // Illegal move
+        // assign the square
+        squares[position] = (activePlayer == 1) ? player1Multiplier : player2Multiplier;
+        // now scurry!
+        EndTurn();
     }
     private void ResetBoard()
     {

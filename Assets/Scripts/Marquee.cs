@@ -7,7 +7,7 @@ using Assets.Scripts;
 public class Marquee : MonoBehaviour
 {
     #region properties exposed to the inspector
-    public BoardEngine board;
+    //public BoardEngine board;
     public TextMeshProUGUI textObject;
     #endregion
 
@@ -29,9 +29,9 @@ public class Marquee : MonoBehaviour
     {
         textObject.text = "Welcome to New Game Plus! Player 1's turn.";
     }
-    private void UpdateMarquee()
+    private void UpdateMarquee(GameState gameState)
     {
-        switch(board.gameState)
+        switch(gameState)
         {
             case GameState.PLAYER_1_TURN:
                 textObject.text = "Player 1's turn.";
